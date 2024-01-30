@@ -55,6 +55,44 @@ export default class Character implements Fighter {
   }
 
   get energy(): Energy {
-    return this._energy;
+    return { ...this._energy };
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  receiveDamage(attackPoints: number): number {
+    const damageTaken = attackPoints - this._defense;
+    if (damageTaken > 0) {
+      this._lifePoints -= damageTaken;
+    } else {
+      this._lifePoints -= 1;
+    }
+    return this._lifePoints <= 0 ? -1 : this._lifePoints;
+  }
+
+  attack(enemy: Fighter): void {
+    enemy.receiveDamage(this._strength);
+  }
+
+  levelUp(): void {
+    this._maxLifePoints += getRandomInt(1, 10);
+    this._strength += getRandomInt(1, 10);
+    this._dexterity += getRandomInt(1, 10);
+    this._defense += getRandomInt(1, 10);
+    this._energy.amount = 10;
+
+    if (this._maxLifePoints > this._race.maxLifePoints) {
+      this._maxLifePoints = this._race.maxLifePoints;
+    }
+    this._lifePoints = this._maxLifePoints;
+  }
+
+  special(enemy: Fighter): void {
+    enemy.receiveDamage(this._strength * 3);
+    this._lifePoints += 15;
+    this._defense += 15;
+    this._dexterity += 10;
   }
 }
