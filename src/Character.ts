@@ -14,7 +14,6 @@ export default class Character implements Fighter {
   private _dexterity: number;
   private _energy: Energy;
   private _name: string;
-  private _levelCount: number;
 
   constructor(name: string) {
     this._name = name;
@@ -29,7 +28,6 @@ export default class Character implements Fighter {
       type_: this._archetype.energyType,
       amount: getRandomInt(1, 10),
     };
-    this._levelCount = 0;
   }
 
   get race(): Race {
@@ -64,10 +62,6 @@ export default class Character implements Fighter {
     return this._name;
   }
 
-  get levelCount(): number {
-    return this._levelCount;
-  }
-
   receiveDamage(attackPoints: number): number {
     const damageTaken = attackPoints - this._defense;
     if (damageTaken > 0) {
@@ -88,7 +82,6 @@ export default class Character implements Fighter {
     this._dexterity += getRandomInt(1, 10);
     this._defense += getRandomInt(1, 10);
     this._energy.amount = 10;
-    this._levelCount++;
 
     if (this._maxLifePoints > this._race.maxLifePoints) {
       this._maxLifePoints = this._race.maxLifePoints;

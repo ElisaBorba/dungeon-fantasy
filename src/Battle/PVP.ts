@@ -13,15 +13,27 @@ export default class PVP extends Battle {
   }
 
   override fight(): number {
-    while (this._player1.lifePoints > 0 && this._player2.lifePoints > 0) {
-      this._player1.attack(this._player2);
-      this._player2.attack(this._player1);
+    while (this.playersAreAlive()) {
+      this.attackPlayers();
     }
 
-    return this._player1.lifePoints <= 0 && this._player2.lifePoints <= 0
-      ? super.fight()
-      : this._player1.lifePoints <= 0
-      ? -1
-      : 1;
+    return this.calculateWinner();
+  }
+
+  private playersAreAlive(): boolean {
+    return this._player1.lifePoints > 0 && this._player2.lifePoints > 0;
+  }
+
+  private attackPlayers(): void {
+    this._player1.attack(this._player2);
+    this._player2.attack(this._player1);
+  }
+
+  private calculateWinner(): number {
+    if (this._player1.lifePoints <= 0 && this._player2.lifePoints <= 0) {
+      return super.fight();
+    }
+
+    return this._player1.lifePoints <= 0 ? -1 : 1;
   }
 }
